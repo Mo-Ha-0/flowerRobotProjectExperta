@@ -1,5 +1,5 @@
 GRID        = {"width": 5, "height": 5}
-WAREHOUSE   = {"x": 3, "y": 2}
+WAREHOUSE   = {"x": 2, "y": 3}
 ROBOT_START = {"x": 3, "y": 1}
 
 PAVILIONS = [

@@ -18,9 +18,9 @@ from utils import is_goal, reconstruct_path
 
 def bouquets_summary(bouquets: list) -> str:
     if not bouquets:
-        return "\u0641\u0627\u0631\u063a"  # فارغ
+        return "empty"
     c = Counter(bouquets)
-    return ", ".join(f"{k[0]}/{k[1]}\u00d7{v}" for k, v in c.items())
+    return ", ".join(f"{k[0]}/{k[1]}x{v}" for k, v in c.items())
 
 
 class GoalRulesMixin:
@@ -52,7 +52,6 @@ class GoalRulesMixin:
             depth     = MATCH.depth,
         ),
         TEST(lambda bq, pavs: is_goal(bq, pavs)),
-        salience=5,
     )
     def goal_rule(self, nid, bq, pavs, cost, depth):
         if self.solution is not None:
@@ -79,9 +78,9 @@ class GoalRulesMixin:
     )
     def print_path_rule(self, nid, cost, depth):
         print("\n" + "\u2550" * 65)
-        print("  ★ حالة الهدف وُجدت! تكلفة={}  عمق={}".format(cost, depth))
+        print("  ★ Goal found! cost={}  depth={}".format(cost, depth))
         print("\u2550" * 65)
-        print("  مسار الحل — تسلسل العمليات")
+        print("  Solution path — operation sequence")
         print("\u2550" * 65)
 
         path = self.solution.get("path", [])
@@ -97,7 +96,6 @@ class GoalRulesMixin:
                 bq_str,
             ))
 
-        # طباعة ملخص الحالة الهدف
-        print("\n  ✓ جميع الأجنحة استلمت احتياجاتها بالكامل")
+        print("\n  ✓ All pavilions received their full needs")
 
         self.halt()

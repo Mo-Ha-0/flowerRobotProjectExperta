@@ -60,7 +60,7 @@ class AStarStrategy(strategies.Strategy):
                 bq   = fact["bouquets"]
                 pavs = fact["pavilions"]
                 h = self._heuristic(rx, ry, bq, pavs)
-                return (-(cost + h),)
+                return (-(cost + h), activation.rule.__name__)
 
         return (0,)
 

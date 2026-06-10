@@ -99,7 +99,7 @@ class ConstraintRulesMixin:
             "bouquets": list(bq),
             "max_load": ml,
             "carried" : len(bq),
-            "detail"  : f"يحمل {len(bq)} باقة والحد الأقصى {ml}",
+            "detail"  : f"carries {len(bq)} bouquets, max_load={ml}",
         })
         self.retract(node)  # إزالة العقدة من ذاكرة العمل
 
@@ -131,7 +131,7 @@ class ConstraintRulesMixin:
             "bouquets": list(bq),
             "types"   : types,
             "colors"  : colors,
-            "detail"  : f"أنواع={types} وألوان={colors} معاً — ممنوع",
+            "detail"  : f"types={types} AND colors={colors} together — forbidden",
         })
         self.retract(node)
 
@@ -167,7 +167,7 @@ class ConstraintRulesMixin:
             "bouquets"      : list(bq),
             "pav_type"      : pav_type,
             "carried_types" : carried,
-            "detail"        : f"الجناح '{pav_type}' والروبوت يحمل {carried}",
+            "detail"        : f"at pavilion '{pav_type}' but carrying {carried}",
         })
         # لا retract — الروبوت يمر فقط
 
@@ -195,6 +195,6 @@ class ConstraintRulesMixin:
             "node_id" : nid,
             "position": (rx, ry),
             "grid"    : (gw, gh),
-            "detail"  : f"({rx},{ry}) خارج الشبكة {gw}×{gh}",
+            "detail"  : f"({rx},{ry}) out of grid {gw}x{gh}",
         })
         self.retract(node)

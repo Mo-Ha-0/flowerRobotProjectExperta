@@ -16,11 +16,11 @@ from initial_state import PAVILIONS_SIMPLE, PAVILIONS
 
 def bouquets_summary(bouquets: list) -> str:
     if not bouquets:
-        return "فارغ"
+        return "empty"
     from collections import Counter
 
     c = Counter(bouquets)
-    return ", ".join(f"{k[0]}/{k[1]}×{v}" for k, v in c.items())
+    return ", ".join(f"{k[0]}/{k[1]}x{v}" for k, v in c.items())
 
 
 def main():
@@ -37,19 +37,19 @@ def main():
     engine.run()
 
     # ── رأس التقرير ──────────────────────────────────────────
-    strategy_name = "A* (F(n)=g+h)" if use_astar else "DFS (عمق)"
+    strategy_name = "A* (F(n)=g+h)" if use_astar else "DFS (depth)"
     print("\n" + "█" * 65)
-    print(f"  استراتيجية البحث: {strategy_name}")
-    print(f"  العمق الأقصى: {engine.max_depth}")
+    print(f"  Search strategy: {strategy_name}")
+    print(f"  Max depth: {engine.max_depth}")
     print("█" * 65)
 
-    # ── ملخص الهدف ───────────────────────────────────────────
+    # ── Goal summary ──────────────────────────────────────────
     if engine.solution is None:
-        print("\n  ✗ لم يتم العثور على حالة هدف ضمن حد العمق الحالي")
+        print("\n  ✗ No goal state found within current depth limit")
 
-    # ── شجرة البحث ───────────────────────────────────────────
+    # ── Search tree ──────────────────────────────────────────
     print("\n" + "═" * 65)
-    print("  شجرة البحث")
+    print("  Search tree")
     print("═" * 65)
 
     by_depth: dict[int, list] = {}
@@ -57,26 +57,26 @@ def main():
         by_depth.setdefault(n["depth"], []).append(n)
 
     for depth in sorted(by_depth):
-        print(f"\n  ── العمق {depth}  ({len(by_depth[depth])} عقدة) ──")
-        for n in by_depth[depth][:8]:  # حد 8 عقد لكل عمق للاختصار
+        print(f"\n  ── depth {depth}  ({len(by_depth[depth])} nodes) ──")
+        for n in by_depth[depth][:8]:
             bq_str = bouquets_summary(n.get("bouquets", []))
             print(
                 f"    {n['action']:30s}  ({n['rx']},{n['ry']})"
                 f"  cost={n['cost']}  [{bq_str}]"
             )
         if len(by_depth[depth]) > 8:
-            print(f"    ... و {len(by_depth[depth]) - 8} عقدة أخرى")
+            print(f"    ... and {len(by_depth[depth]) - 8} more nodes")
 
-    print(f"\n  إجمالي العقد المولَّدة : {len(engine.all_nodes)}")
-    print(f"  الحالات المزارة       : {len(engine.visited)}")
+    print(f"\n  Total nodes generated : {len(engine.all_nodes)}")
+    print(f"  Visited states        : {len(engine.visited)}")
 
-    # ── سجل الانتهاكات ───────────────────────────────────────
+    # ── Violations log ───────────────────────────────────────
     if engine.violations_log:
-        print(f"\n  انتهاكات القيود: {len(engine.violations_log)}")
+        print(f"\n  Constraint violations: {len(engine.violations_log)}")
         for v in engine.violations_log:
             print(f"    • {v['rule']}: {v['detail']}")
     else:
-        print(f"\n  انتهاكات القيود: 0")
+        print(f"\n  Constraint violations: 0")
 
 
 if __name__ == "__main__":
