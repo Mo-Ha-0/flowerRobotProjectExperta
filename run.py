@@ -12,6 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from engine import FlowerExhibitionKE
 from initial_state import PAVILIONS_SIMPLE, PAVILIONS
+from config import MAX_DEPTH
 
 
 def bouquets_summary(bouquets: list) -> str:
@@ -25,12 +26,17 @@ def bouquets_summary(bouquets: list) -> str:
 
 def main():
     use_astar = "--dfs" not in sys.argv
-    pavs = PAVILIONS_SIMPLE
+    pavs = PAVILIONS
+    max_depth = MAX_DEPTH
     for arg in sys.argv[1:]:
-        if arg == "--full":
+        if arg == "--simple":
+            pavs = PAVILIONS_SIMPLE
+        elif arg == "--full":
             pavs = PAVILIONS
+        elif arg.startswith("--max-depth="):
+            max_depth = int(arg.split("=", 1)[1])
 
-    engine = FlowerExhibitionKE(max_depth=10, use_astar=use_astar)
+    engine = FlowerExhibitionKE(max_depth=max_depth, use_astar=use_astar)
     engine.reset()
     engine.declare_facts(pavs)
 

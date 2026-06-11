@@ -52,6 +52,7 @@ class GoalRulesMixin:
             depth     = MATCH.depth,
         ),
         TEST(lambda bq, pavs: is_goal(bq, pavs)),
+        salience=5,
     )
     def goal_rule(self, nid, bq, pavs, cost, depth):
         if self.solution is not None:
